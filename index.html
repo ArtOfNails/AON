@@ -358,12 +358,13 @@ footer{
 <section class="section" id="contact">
   <h2>Place Order</h2>
 
-  <form>
-    <input type="text" placeholder="Name" required>
-    <input type="text" placeholder="WhatsApp" required>
-    <textarea placeholder="Design Idea"></textarea>
-    <button>Order Now</button>
-  </form>
+<form id="orderForm">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+  <textarea name="design" placeholder="Design Idea"></textarea>
+  <button type="submit">Order Now</button>
+</form>
+
 </section>
 
 <!-- ⭐ REVIEWS ROTATION -->
@@ -420,6 +421,35 @@ function addReview(){
   }
 }
 
+</script>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycby0ciEHP0VVbxzcGOAmqLKjzzMk9ARP7Pztl7nMSGq1C94yBaT0YKehYldfivsq_lZn/exec";
+
+document.getElementById("orderForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("name").value,
+    whatsapp: document.getElementById("whatsapp").value,
+    design: document.getElementById("design").value
+  };
+
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(response => {
+    if(response.status === "success"){
+      alert("✨ Order placed successfully! We’ll contact you soon.");
+      document.getElementById("orderForm").reset();
+    }
+  })
+  .catch(err => {
+    alert("Something went wrong!");
+  });
+});
 </script>
 
 </body>
