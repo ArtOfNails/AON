@@ -423,26 +423,34 @@ function addReview(){
 
 </script>
 
+<script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbyCpD9MV3DsQe5X3VfGDL-oap1VJUW1rQ34WcKujuePWgmp513I0uOjhQQUT_Rw6O9lAQ/exec";
 
 document.getElementById("orderForm").addEventListener("submit", function(e){
   e.preventDefault();
 
-  const formData = new FormData(this);
+  const data = {
+    name: document.getElementById("name").value,
+    whatsapp: document.getElementById("whatsapp").value,
+    design: document.getElementById("design").value
+  };
 
   fetch(scriptURL, {
     method: "POST",
-    body: formData
+    body: JSON.stringify(data)
   })
-  .then(res => {
-    alert("Order saved in sheet 💅✨");
-    this.reset();
+  .then(res => res.json())
+  .then(response => {
+    if(response.status === "success"){
+      alert("✨ Order placed successfully! We’ll contact you soon.");
+      document.getElementById("orderForm").reset();
+    }
   })
   .catch(err => {
-    alert("Error saving order");
-    console.error(err);
+    alert("Something went wrong!");
   });
 });
+</script>
 
 </body>
 </html>
